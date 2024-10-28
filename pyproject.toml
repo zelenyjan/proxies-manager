@@ -1,0 +1,110 @@
+[tool.poetry]
+name = "proxies-manager"
+version = "0.1.0"
+description = ""
+authors = ["Jan Zeleny <zelenja8@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+django = "^5.1.2"
+psycopg = "^3.2.3"
+celery = "^5.4.0"
+redis = "^5.2.0"
+django-environ = "^0.11.2"
+gunicorn = "^23.0.0"
+httpx = "^0.27.2"
+sentry-sdk = "^2.17.0"
+whitenoise = "^6.7.0"
+djangorestframework = "^3.15.2"
+markdown = "^3.7"
+django-filter = "^24.3"
+django-model-utils = "^5.0.0"
+django-anymail = "^12.0"
+
+[tool.poetry.group.dev.dependencies]
+colorama = "^0.4.6"
+coverage = { extras = ["toml"], version = "^7.6.4" }
+pytest = "^8.3.3"
+pytest-sugar = "^1.0.0"
+pytest-cov = "^5.0.0"
+pytest-django = "^4.9.0"
+factory-boy = "^3.3.1"
+
+[tool.poetry.group.static-analysis.dependencies]
+ruff = "^0.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 120
+extend-exclude = ["*/migrations/*", "**/tmp_*.py"]
+
+[tool.ruff.lint]
+# https://beta.ruff.rs/docs/rules/
+select = [
+  "F",
+  "E",
+  "W",
+  "C90",
+  "I",
+  "N",
+  "D",
+  "UP",
+  "YTT",
+  "S",
+  "B",
+  "A",
+  "C4",
+  "T10",
+  "DJ",
+  "EXE",
+  "FA",
+  "G",
+  "INP",
+  "T20",
+  "PT",
+  "INT",
+  "PTH",
+  "TD",
+  "ERA",
+  "PGH",
+]
+ignore = ["D203", "D212", "D104", "D100", "D106"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/test_*.py" = ["S101"]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+force-wrap-aliases = true
+combine-as-imports = true
+no-lines-before = ["first-party"]
+known-first-party = ["proxies"]
+section-order = [
+  "future",
+  "standard-library",
+  "django",
+  "drf",
+  "third-party",
+  "config",
+  "first-party",
+  "local-folder",
+]
+[tool.ruff.lint.isort.sections]
+"django" = ["django"]
+"drf" = ["rest_framework"]
+"config" = ["config"]
+
+[tool.pytest.ini_options]
+minversion = 6.0
+addopts = "--ds=config.settings.test --reuse-db"
+python_files = ["tests.py", "test_*.py"]
+norecursedirs = ["node_modules"]
+
+[tool.coverage.run]
+branch = true
+omit = ['*/migrations/*', '*/site-packages/*', 'manage.py', '*/.pycharm_helpers/*', '*/pycharm/*']

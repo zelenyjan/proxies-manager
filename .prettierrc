@@ -1,0 +1,12 @@
+{
+  "useTabs": false,
+  "semi": true,
+  "tabWidth": 2,
+  "bracketSameLine": true,
+  "trailingComma": "all",
+  "arrowParens": "always",
+  "singleAttributePerLine": false,
+  "singleQuote": false,
+  "printWidth": 100,
+  "plugins": ["prettier-plugin-toml"]
+}

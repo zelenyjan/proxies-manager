@@ -1,0 +1,15 @@
+staticfiles
+media
+.git
+.gitignore
+.gitattributes
+.idea
+.editorconfig
+.env
+.env.production.local
+.github
+.python-version
+.ruff_cache
+.vscode
+README.md
+node_modules
