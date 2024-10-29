@@ -3,10 +3,11 @@ from __future__ import annotations
 from django.conf import settings
 from django.contrib import admin
 from django.db import transaction
+from django.db.models import QuerySet
 from django.http import HttpRequest
 
 from proxies.proxies.models import Client, Proxy
-from proxies.proxies.tasks import create_server
+from proxies.proxies.tasks import create_server, delete_server
 
 
 @admin.register(Proxy)
@@ -58,6 +59,17 @@ class ProxyAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
         if not obj.create_request_at:
             transaction.on_commit(lambda: create_server.delay(obj.pk))
+
+    def delete_model(self, request, obj: Proxy):
+        """Delete model."""
+        self.message_user(request, f"Proxy {obj.name} scheduled for delete.", level="INFO")
+        if obj.server_id and not obj.is_removed:
+            delete_server.delay(obj.id)
+
+    def delete_queryset(self, request, queryset: QuerySet[Proxy]):
+        """Delete queryset."""
+        for obj in queryset:
+            self.delete_model(request, obj)
 
 
 @admin.register(Client)

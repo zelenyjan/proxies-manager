@@ -144,17 +144,21 @@ class HetznerService(BaseService):
         )
         data = r.json()
 
-        if "action" in data and "status" in data["action"] and data["action"]["status"] == "success":
-            logger.info("Server %s is deleted.", self.proxy.name)
-            return True
-        else:
-            logger.critical(
-                "Can't delete server %s. Status Code: %s; Response: %s.",
-                self.proxy.name,
-                r.status_code,
-                json.dumps(r.json()),
-            )
-            return False
+        if r.status_code == 200:
+            try:
+                if data["action"]["status"] in ["running", "success"]:
+                    logger.info("Server %s is deleted.", self.proxy.name)
+                    return True
+            except KeyError:
+                pass
+
+        logger.critical(
+            "Can't delete server %s. Status Code: %s; Response: %s.",
+            self.proxy.name,
+            r.status_code,
+            json.dumps(r.json()),
+        )
+        return False
 
     @classmethod
     def get_existing_proxies(cls) -> bool:

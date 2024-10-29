@@ -8,7 +8,3 @@ class ProxiesConfig(AppConfig):
 
     default_auto_field = "django.db.models.BigAutoField"
     name = "proxies.proxies"
-
-    def ready(self) -> None:
-        """Import signals."""
-        from . import signals  # noqa: F401

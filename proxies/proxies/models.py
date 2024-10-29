@@ -77,7 +77,11 @@ class Proxy(UUIDModel):
 
     def delete_server(self) -> bool:
         """Delete proxy server."""
-        return self.get_service().delete_proxy()
+        result = self.get_service().delete_proxy()
+        if result:
+            self.delete()
+            return True
+        return False
 
     def check_status(self) -> bool:
         """Check proxy status."""
