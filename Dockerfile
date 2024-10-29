@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 # install dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc python3-dev libjpeg-dev libcairo2-dev pkg-config zlib1g-dev && \
+    apt-get install -y --no-install-recommends gcc python3-dev libjpeg-dev libpq-dev libcairo2-dev pkg-config zlib1g-dev && \
     pip install --upgrade pip && \
     rm -rf /var/lib/apt/lists/*
 
